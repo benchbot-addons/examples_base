@@ -1,0 +1,7 @@
+name: hello_benchbot
+description: |
+  This is the most basic BenchBot example, and shows you the robot driving back
+  and forth in a straight line. It needs to be run for a task that uses
+  "active" mode (i.e. requires the actions "move_angle" and "move_distance").
+native_command: python3 .hello_benchbot/hello_benchbot
+dockerfile: .hello_benchbot/Dockerfile

@@ -1,0 +1,7 @@
+name: hello_passive
+description: |
+  This example introduces you to the "passive" navigation mode in BenchBot by
+  autonomously guiding a robot through a trajectory. It needs to be run
+  for a task that uses "passive" mode (i.e. requires the action "move_next").
+native_command: python3 .hello_passive/hello_passive
+dockerfile: .hello_passive/Dockerfile
