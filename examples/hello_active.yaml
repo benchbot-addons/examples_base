@@ -5,4 +5,4 @@ description: |
   for a task that uses "active" mode (i.e. requires the actions "move_angle"
   and "move_distance").
 native_command: python3 .hello_active/hello_active
-dockerfile: .hello_active/Dockerfile
+container_directory: .hello_active
