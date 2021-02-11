@@ -1,5 +1,8 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import select
+import signal
+import sys
 
 from benchbot_api import ActionResult, Agent
 from benchbot_api.tools import ObservationVisualiser
@@ -27,16 +30,22 @@ class LineAgent(Agent):
         self.next_action_index = 0
         self.iteration_count = 0
 
+        signal.signal(signal.SIGINT, self._die_gracefully)
+
+    def _die_gracefully(self, sig, frame):
+        print("")
+        sys.exit(0)
+
     def is_done(self, action_result):
         # Continue as long as we have a action_result of SUCCESS & have not
         # reached iteration_count
-        return (self.iteration_count >= LineAgent._ITERATION_LIMIT or
-                action_result != ActionResult.SUCCESS)
+        return (self.iteration_count >= LineAgent._ITERATION_LIMIT
+                or action_result != ActionResult.SUCCESS)
 
     def pick_action(self, observations, action_list):
         # Perform a sanity check to confirm we have valid actions available
-        if ('move_distance' not in action_list or
-                'move_angle' not in action_list):
+        if ('move_distance' not in action_list
+                or 'move_angle' not in action_list):
             raise ValueError(
                 "We don't have any usable actions. Is BenchBot running in the "
                 "right mode (active), or should it have exited (collided / "
@@ -49,7 +58,14 @@ class LineAgent(Agent):
             self.next_action_index)
 
         # Wait until the user presses Enter to perform the next action
-        input("Press Enter to execute next action")
+        print("Press ENTER to execute the next action (Ctrl^C to exit): ",
+              end='')
+        sys.stdout.flush()
+        i = None
+        while not i:
+            i, _, _ = select.select([sys.stdin], [], [], 0)
+            self.vis.update()
+        sys.stdin.readline()
 
         # Figure out which action, & return the selection
         action = LineAgent._ACTIONS[LineAgent._ACTION_SEQUENCE[
