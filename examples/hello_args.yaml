@@ -1,0 +1,8 @@
+name: hello_args
+description: |
+  This example demonstrates how you can pass runtime arguments through to your
+  submissions, both in native mode and containerised mode. Simple run the
+  'benchbot_submit' command with the '--args' flag, and watch them being printed
+  out by the example.
+native_command: python3 .hello_args/hello_args
+container_directory: .hello_args
